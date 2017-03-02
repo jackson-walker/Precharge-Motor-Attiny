@@ -9,15 +9,18 @@
   const int relayCtrl = A3;
   const int optoCtrl = A2;
   const int swCtrl = 0;
+  int blinker = 0;
+  bool ison = true;
   
 void setup() {
 
   //set up the outputs and the input
-  pinMode(chrgLed, OUTPUT);
-  pinMode(onLineLed, OUTPUT);
+  pinMode(chrgLed, OUTPUT); //red
+  pinMode(onLineLed, OUTPUT); //green
   pinMode(relayCtrl, OUTPUT);
   pinMode(optoCtrl, OUTPUT);
   pinMode(swCtrl, INPUT);
+  
 
  
   
@@ -25,15 +28,34 @@ void setup() {
 
 void loop() {
 
+    while (digitalRead(swCtrl) == HIGH)
+    {
+      
+      if(blinker == 7000)  //blinks slow to indicate not latched
+      {
+        if(ison == true)
+        {
+          digitalWrite(chrgLed, LOW);
+          ison = false;
+        }
+        else
+        {
+          digitalWrite(chrgLed,HIGH);
+          ison = true;
+        } 
+        blinker = 0;
+      }  // end outer if
+      blinker = blinker + 1;  //memes      
+    } //end while
     
-  // put your main code here, to run repeatedly:
+  
     digitalWrite(optoCtrl, HIGH);
     digitalWrite(relayCtrl, HIGH);
     digitalWrite(chrgLed, HIGH);   // turn the LED on (HIGH is the voltage level)
-    digitalWrite(onLineLED, HIGH);
+    digitalWrite(onLineLed, HIGH);
     delay(250);              // wait for a second
     digitalWrite(chrgLed, LOW);    // turn the LED off by making the voltage LOW
-    digitalWrite(onLineLED, LOW);
+    digitalWrite(onLineLed, LOW);
 
     delay(250);              // wait for a second
 
