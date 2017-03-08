@@ -20,43 +20,55 @@ void setup() {
   pinMode(relayCtrl, OUTPUT);
   pinMode(optoCtrl, OUTPUT);
   pinMode(swCtrl, INPUT);
-  
-
- 
-  
 }
 
 void loop() {
-
-    while (digitalRead(swCtrl) == HIGH)
-    {
-      
-      if(blinker == 7000)  //blinks slow to indicate not latched
-      {
-        if(ison == true)
-        {
-          digitalWrite(chrgLed, LOW);
-          ison = false;
-        }
-        else
-        {
-          digitalWrite(chrgLed,HIGH);
-          ison = true;
-        } 
-        blinker = 0;
-      }  // end outer if
-      blinker = blinker + 1;  //memes      
-    } //end while
-    
-  
-    digitalWrite(optoCtrl, HIGH);
-    digitalWrite(relayCtrl, HIGH);
-    digitalWrite(chrgLed, HIGH);   // turn the LED on (HIGH is the voltage level)
-    digitalWrite(onLineLed, HIGH);
-    delay(250);              // wait for a second
-    digitalWrite(chrgLed, LOW);    // turn the LED off by making the voltage LOW
+    /////////////////////INIT DISCONNECT////////////////////
+    digitalWrite(relayCtrl, LOW);
+    digitalWrite(optoCtrl, LOW);
     digitalWrite(onLineLed, LOW);
+    
+    while (digitalRead(swCtrl) == HIGH) //while floating or high
+    {
+      delay(2000);
+      digitalWrite(chrgLed,HIGH);
+      delay(250);
+      digitalWrite(chrgLed,LOW);
+    
+    } //end while
+      
+    prechargeFunc();
+      
+    while(digitalRead(swCtrl) == LOW) //relay control will be high
+    {
+      digitalWrite(chrgLed, LOW);
+      digitalWrite(onLineLed, HIGH);
+    } //end while swctrol low
+}// end loop
 
-    delay(250);              // wait for a second
-
+void prechargeFunc()
+{
+  digitalWrite(optoCtrl, HIGH); 
+  digitalWrite(chrgLed, HIGH);
+  delay(240);
+  digitalWrite(chrgLed, LOW);
+  delay(240);
+  digitalWrite(chrgLed, HIGH);
+  delay(240);
+  digitalWrite(chrgLed, LOW);
+  delay(240); //1 second
+  digitalWrite(chrgLed, HIGH);
+  delay(240);
+  digitalWrite(chrgLed, LOW);
+  delay(240);
+  digitalWrite(chrgLed, HIGH);
+  delay(240);
+  digitalWrite(chrgLed, LOW);
+  delay(240); //2 seconds
+  digitalWrite(chrgLed, HIGH);
+  delay(240); 
+  digitalWrite(relayCtrl, HIGH);
+  delay(250); //overlapping for a 4th second to allow it to 
+  digitalWrite(optoCtrl,LOW); //about 2.5 seconds
 }
+
