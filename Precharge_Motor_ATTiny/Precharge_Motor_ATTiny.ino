@@ -72,3 +72,8 @@ void prechargeFunc()
   digitalWrite(optoCtrl,LOW); //about 2.5 seconds
 }
 
+void blink(int sPin, int durationMS)
+{
+  
+}
+
