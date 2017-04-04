@@ -9,7 +9,6 @@
   const int relayCtrl = A3;
   const int optoCtrl = A2;
   const int swCtrl = 0;
-  int blinker = 0;
   bool ison = true;
   
 void setup() {
@@ -49,31 +48,20 @@ void loop() {
 void prechargeFunc()
 {
   digitalWrite(optoCtrl, HIGH); 
-  digitalWrite(chrgLed, HIGH);
-  delay(240);
-  digitalWrite(chrgLed, LOW);
-  delay(240);
-  digitalWrite(chrgLed, HIGH);
-  delay(240);
-  digitalWrite(chrgLed, LOW);
-  delay(240); //1 second
-  digitalWrite(chrgLed, HIGH);
-  delay(240);
-  digitalWrite(chrgLed, LOW);
-  delay(240);
-  digitalWrite(chrgLed, HIGH);
-  delay(240);
-  digitalWrite(chrgLed, LOW);
-  delay(240); //2 seconds
-  digitalWrite(chrgLed, HIGH);
-  delay(240); 
+  blink(chrgLed, 250, 6);
   digitalWrite(relayCtrl, HIGH);
   delay(250); //overlapping for a 4th second to allow it to 
   digitalWrite(optoCtrl,LOW); //about 2.5 seconds
 }
 
-void blink(int sPin, int durationMS)
+void blink(int sPin, int blinkDurationMS, int duration) //duration is 2x duration MS per blink cycle
 {
-  
+  for(int x=0; x<= duration; x++)
+  {
+    digitalWrite(sPin, HIGH);
+    delay(blinkDurationMS);
+    digitalWrite(sPin, LOW);
+    delay(blinkDurationMS);
+  }
 }
 
