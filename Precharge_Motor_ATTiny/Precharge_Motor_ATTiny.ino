@@ -47,8 +47,8 @@ void loop() {
 
 void prechargeFunc()
 {
-  digitalWrite(optoCtrl, HIGH); 
-  blink(chrgLed, 250, 6);
+  digitalWrite(optoCtrl HIGH); 
+  blink(chrgLed, 25,0, 6);
   digitalWrite(relayCtrl, HIGH);
   delay(250); //overlapping for a 4th second to allow it to 
   digitalWrite(optoCtrl,LOW); //about 2.5 seconds
