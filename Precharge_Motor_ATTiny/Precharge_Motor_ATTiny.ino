@@ -54,9 +54,9 @@ void prechargeFunc()
   digitalWrite(optoCtrl,LOW); //about 2.5 seconds
 }
 
-void blink(int sPin, int blinkDurationMS, int duration) //duration is 2x duration MS per blink cycle
+void blink(int sPin, int blinkDurationMS, int iCycles) //duration is 2x blinkDurationMS per cycle e.g. bdMS = 250 ms and cycles is 2 so total length will be 1 second
 {
-  for(int x=0; x<= duration; x++)
+  for(int x=0; x<= iCycles; x++)
   {
     digitalWrite(sPin, HIGH);
     delay(blinkDurationMS);
