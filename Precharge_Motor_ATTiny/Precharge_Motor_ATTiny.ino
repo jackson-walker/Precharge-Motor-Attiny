@@ -1,7 +1,14 @@
 //precharge and motor relay software
 //version 1.0
 //written and developed by Jackson Walker
-//28-2-2017
+//225-5-2017
+
+/*
+ *This is the control software for the Ra X precharge board and relay control board
+ * 
+ * 
+ * 
+ */
 
     
   const int chrgLed = A1;
@@ -9,7 +16,7 @@
   const int relayCtrl = A3;
   const int optoCtrl = A2;
   const int swCtrl = 0;
-  bool ison = true;
+  bool swOn = false;
   
 void setup() {
 
@@ -19,6 +26,22 @@ void setup() {
   pinMode(relayCtrl, OUTPUT);
   pinMode(optoCtrl, OUTPUT);
   pinMode(swCtrl, INPUT);
+
+  
+  digitalWrite(relayCtrl, LOW);
+  digitalWrite(optoCtrl, LOW);
+  digitalWrite(onLineLed, LOW);
+  digitalWrite(chrgLed, LOW);
+  while(digitalRead(swCtrl) == LOW) //if it's on during setup, it needs to be set to low before anything can happen
+  {
+      digitalWrite(onLineLed,HIGH);
+      digitalWrite(chrgLed,HIGH);
+      delay(80);
+      digitalWrite(onLineLed,LOW);
+      digitalWrite(chrgLed,LOW);
+      delay(80);
+  }
+  
 }
 
 void loop() {
@@ -26,14 +49,11 @@ void loop() {
     digitalWrite(relayCtrl, LOW);
     digitalWrite(optoCtrl, LOW);
     digitalWrite(onLineLed, LOW);
+    digitalWrite(chrgLed,LOW);
     
-    while (digitalRead(swCtrl) == HIGH) //while floating or high
+    while (digitalRead(swCtrl) == HIGH) //while floating or high, also if we didn't already do inital switch loop
     {
-      delay(2000);
       digitalWrite(chrgLed,HIGH);
-      delay(250);
-      digitalWrite(chrgLed,LOW);
-    
     } //end while
       
     prechargeFunc();
@@ -47,8 +67,8 @@ void loop() {
 
 void prechargeFunc()
 {
-  digitalWrite(optoCtrl HIGH); 
-  blink(chrgLed, 25,0, 6);
+  digitalWrite(optoCtrl, HIGH); 
+  blink(chrgLed, 250, 6);
   digitalWrite(relayCtrl, HIGH);
   delay(250); //overlapping for a 4th second to allow it to 
   digitalWrite(optoCtrl,LOW); //about 2.5 seconds
@@ -64,4 +84,14 @@ void blink(int sPin, int blinkDurationMS, int iCycles) //duration is 2x blinkDur
     delay(blinkDurationMS);
   }
 }
+
+//checks if the switch is still on, returns a bool 
+bool checkForSwitch()
+{
+  if(digitalRead(swCtrl) == LOW)
+    swOn = true; 
+  return swOn;
+}
+
+
 
