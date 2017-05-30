@@ -16,7 +16,6 @@
   const int relayCtrl = A3;
   const int optoCtrl = A2;
   const int swCtrl = 0;
-  bool swOn = false;
   
 void setup() {
 
@@ -67,10 +66,37 @@ void loop() {
 
 void prechargeFunc()
 {
-  digitalWrite(optoCtrl, HIGH); 
+  digitalWrite(optoCtrl, HIGH);
+  if(digitalRead(swCtrl) == HIGH)  //if true, exit
+  {
+    blink(chrgLed,30,4);
+    digitalWrite(optoCtrl, LOW); 
+    digitalWrite(relayCtrl, LOW);
+    digitalWrite(onLineLed, LOW);
+    digitalWrite(chrgLed,LOW); 
+    return;
+  }
   blink(chrgLed, 250, 6);
+  if(digitalRead(swCtrl) == HIGH)
+  {
+    blink(chrgLed,30,4);
+    digitalWrite(optoCtrl, LOW); 
+    digitalWrite(relayCtrl, LOW); 
+    digitalWrite(onLineLed, LOW);
+    digitalWrite(chrgLed,LOW);
+    return;
+  }
   digitalWrite(relayCtrl, HIGH);
   delay(250); //overlapping for a 4th second to allow it to 
+  if(digitalRead(swCtrl) == HIGH)
+  {
+    blink(chrgLed,30,4);
+    digitalWrite(optoCtrl, LOW); 
+    digitalWrite(relayCtrl, LOW); 
+    digitalWrite(onLineLed, LOW);
+    digitalWrite(chrgLed,LOW);
+    return;
+  }
   digitalWrite(optoCtrl,LOW); //about 2.5 seconds
 }
 
@@ -85,13 +111,19 @@ void blink(int sPin, int blinkDurationMS, int iCycles) //duration is 2x blinkDur
   }
 }
 
-//checks if the switch is still on, returns a bool 
-bool checkForSwitch()
+void chkExit()
 {
-  if(digitalRead(swCtrl) == LOW)
-    swOn = true; 
-  return swOn;
+if(digitalRead(swCtrl) == HIGH)
+  {
+    blink(chrgLed,30,4);
+    digitalWrite(optoCtrl, LOW); 
+    digitalWrite(relayCtrl, LOW); 
+    digitalWrite(onLineLed, LOW);
+    digitalWrite(chrgLed,LOW);
+    return;
+  }
 }
+
 
 
 
